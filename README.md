@@ -1,5 +1,7 @@
 # dbt-hacks
 
+[![CI](https://github.com/sudo-pradip/dbt-hacks/actions/workflows/ci.yml/badge.svg)](https://github.com/sudo-pradip/dbt-hacks/actions/workflows/ci.yml)
+
 dbt-hacks fills the gaps when dbt doesn't support the pattern you need, doesn't fit your project's workflow, or simply hasn't gotten there yet.
 
 ## Available hacks

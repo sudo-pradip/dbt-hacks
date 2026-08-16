@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: Integration tests (dbt-core ${{ matrix.dbt-duckdb }})
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - dbt-duckdb: "1.9.*"
+          - dbt-duckdb: "1.10.*"
+          - dbt-duckdb: "1.11.*"
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: integration_tests/requirements.txt
+
+      - name: Install dependencies
+        run: pip install "dbt-duckdb==${{ matrix.dbt-duckdb }}" "pytest>=8"
+
+      - name: Run integration tests
+        working-directory: integration_tests
+        run: pytest tests -v --tb=short
