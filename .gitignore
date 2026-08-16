@@ -9,3 +9,9 @@ __pycache__/
 *.py[cod]
 .venv/
 .pytest_cache/
+
+# temporary work
+hub_fork/
+hubcap_fork/
+dbt_hacks_consumer_test/
+
