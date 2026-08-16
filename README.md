@@ -4,11 +4,11 @@ Pure-Jinja workarounds for open dbt limitations — no Python, no plugins, stric
 
 ## Available hacks
 
-| Hack | Fixes | Detail |
-|---|---|---|
-| `source()` respects `--defer` | [dbt-core#10912](https://github.com/dbt-labs/dbt-core/issues/10912) | [docs/source_defer.md](docs/source_defer.md) |
-| `strategy: append` for snapshots | [dbt-core#3878](https://github.com/dbt-labs/dbt-core/issues/3878) | [docs/snapshot_append.md](docs/snapshot_append.md) |
-| `database_role_grants` (Snowflake) | [dbt-core#13756](https://github.com/dbt-labs/dbt-core/issues/13756) | [docs/database_role_grants.md](docs/database_role_grants.md) |
+| Hack | Fixes | Status | Detail |
+|---|---|---|---|
+| `source()` respects `--defer` | [dbt-core#10912](https://github.com/dbt-labs/dbt-core/issues/10912) | Stable | [docs/source_defer.md](docs/source_defer.md) |
+| `strategy: append` for snapshots | [dbt-core#3878](https://github.com/dbt-labs/dbt-core/issues/3878) | Stable | [docs/snapshot_append.md](docs/snapshot_append.md) |
+| `database_role_grants` (Snowflake) | [dbt-core#13756](https://github.com/dbt-labs/dbt-core/issues/13756) | **Experimental** | [docs/database_role_grants.md](docs/database_role_grants.md) |
 
 ---
 

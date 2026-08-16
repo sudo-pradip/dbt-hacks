@@ -77,7 +77,7 @@ HELPER_MACROS_SQL = """\
     {%- set relation = api.Relation.create(
             database=database, schema=schema, identifier=identifier,
             type=rel_type) -%}
-    {{ log(dbt_hacks.get_database_role_grant_sql(relation, privilege, grantee), info=True) }}
+    {{ log(dbt_hacks.dbt_hacks__get_database_role_grant_sql(relation, privilege, grantee), info=True) }}
 {% endmacro %}
 
 
@@ -85,14 +85,14 @@ HELPER_MACROS_SQL = """\
     {%- set relation = api.Relation.create(
             database=database, schema=schema, identifier=identifier,
             type=rel_type) -%}
-    {{ log(dbt_hacks.get_database_role_revoke_sql(relation, privilege, grantee), info=True) }}
+    {{ log(dbt_hacks.dbt_hacks__get_database_role_revoke_sql(relation, privilege, grantee), info=True) }}
 {% endmacro %}
 
 
 {% macro test_grants_diff(current_json, desired_json) %}
     {%- set current = fromjson(current_json) -%}
     {%- set desired = fromjson(desired_json) -%}
-    {%- set diff    = dbt_hacks.database_role_grants_diff(current, desired) -%}
+    {%- set diff    = dbt_hacks.dbt_hacks__database_role_grants_diff(current, desired) -%}
     {{ log(tojson(diff), info=True) }}
 {% endmacro %}
 """

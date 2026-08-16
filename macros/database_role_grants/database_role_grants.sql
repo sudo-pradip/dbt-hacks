@@ -44,7 +44,7 @@
 {# SQL generators                                                         #}
 {# -------------------------------------------------------------------- #}
 
-{%- macro get_database_role_grant_sql(relation, privilege, grantee) -%}
+{%- macro dbt_hacks__get_database_role_grant_sql(relation, privilege, grantee) -%}
     {#- Qualify the grantee with the relation's database when no prefix given. -#}
     {%- if '.' not in grantee -%}
         {%- set qualified = relation.database ~ '.' ~ grantee -%}
@@ -56,7 +56,7 @@
 {%- endmacro -%}
 
 
-{%- macro get_database_role_revoke_sql(relation, privilege, grantee) -%}
+{%- macro dbt_hacks__get_database_role_revoke_sql(relation, privilege, grantee) -%}
     {%- if '.' not in grantee -%}
         {%- set qualified = relation.database ~ '.' ~ grantee -%}
     {%- else -%}
@@ -71,7 +71,7 @@
 {# SHOW GRANTS reader                                                     #}
 {# -------------------------------------------------------------------- #}
 
-{% macro get_existing_database_role_grants(relation) %}
+{% macro dbt_hacks__get_existing_database_role_grants(relation) %}
     {#
     Runs `SHOW GRANTS ON <type> <relation>` and returns a dict of the form:
         { 'SELECT': ['ROLE_A', 'ROLE_B'], 'INSERT': ['ROLE_C'] }
@@ -105,7 +105,7 @@
 {# Diff helper                                                            #}
 {# -------------------------------------------------------------------- #}
 
-{% macro database_role_grants_diff(current, desired) %}
+{% macro dbt_hacks__database_role_grants_diff(current, desired) %}
     {#
     Computes what needs granting and revoking given:
       current  — {PRIVILEGE: [GRANTEE, ...]} from SHOW GRANTS (bare names, upper)
@@ -167,7 +167,7 @@
 {# Main entry point                                                       #}
 {# -------------------------------------------------------------------- #}
 
-{% macro apply_database_role_grants(relation, grant_config, should_revoke) %}
+{% macro dbt_hacks__apply_database_role_grants(relation, grant_config, should_revoke) %}
     {#
     Applies DATABASE ROLE grants for `grant_config` on `relation`.
     Mirrors the pattern of default__apply_grants:
@@ -181,8 +181,8 @@
     {%- endif -%}
 
     {%- if should_revoke -%}
-        {%- set existing = dbt_hacks.get_existing_database_role_grants(relation) -%}
-        {%- set diff = dbt_hacks.database_role_grants_diff(existing, grant_config) -%}
+        {%- set existing = dbt_hacks.dbt_hacks__get_existing_database_role_grants(relation) -%}
+        {%- set diff = dbt_hacks.dbt_hacks__database_role_grants_diff(existing, grant_config) -%}
         {%- set needs_granting = diff['to_add'] -%}
         {%- set needs_revoking = diff['to_revoke'] -%}
         {%- if not (needs_granting or needs_revoking) -%}
@@ -197,13 +197,13 @@
 
     {%- for priv, grantees in needs_revoking.items() -%}
         {%- for grantee in grantees -%}
-            {%- do dcl.append(dbt_hacks.get_database_role_revoke_sql(relation, priv, grantee)) -%}
+            {%- do dcl.append(dbt_hacks.dbt_hacks__get_database_role_revoke_sql(relation, priv, grantee)) -%}
         {%- endfor -%}
     {%- endfor -%}
 
     {%- for priv, grantees in needs_granting.items() -%}
         {%- for grantee in grantees -%}
-            {%- do dcl.append(dbt_hacks.get_database_role_grant_sql(relation, priv, grantee)) -%}
+            {%- do dcl.append(dbt_hacks.dbt_hacks__get_database_role_grant_sql(relation, priv, grantee)) -%}
         {%- endfor -%}
     {%- endfor -%}
 

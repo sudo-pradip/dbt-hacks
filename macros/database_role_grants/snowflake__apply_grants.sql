@@ -49,7 +49,7 @@
     {#- Step 2: DATABASE ROLE grants — only if the config key is present. -#}
     {%- set db_role_grants = config.get('database_role_grants') -%}
     {%- if db_role_grants -%}
-        {{ dbt_hacks.apply_database_role_grants(relation, db_role_grants, should_revoke) }}
+        {{ dbt_hacks.dbt_hacks__apply_database_role_grants(relation, db_role_grants, should_revoke) }}
     {%- endif -%}
 
 {% endmacro %}
