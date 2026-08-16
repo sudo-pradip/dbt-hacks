@@ -1,6 +1,6 @@
 # dbt-hacks
 
-Pure-Jinja workarounds for open dbt limitations — no Python, no plugins, strict no-ops unless triggered.
+dbt-hacks fills the gaps when dbt doesn't support the pattern you need, doesn't fit your project's workflow, or simply hasn't gotten there yet.
 
 ## Available hacks
 
