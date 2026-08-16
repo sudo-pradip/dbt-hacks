@@ -1,0 +1,18 @@
+sources:
+  # Environment-derived source: no explicit database -> resolves to the
+  # target's database (dev in dev, prod in prod). The source that needs
+  # deferral.
+  - name: raw
+    schema: raw_data
+    tables:
+      - name: customers
+      # Append-only orders table — used by snapshot_append tests.
+      - name: orders_append
+
+  # Explicit-database source: points at a catalog shared by ALL environments.
+  # The safety gate must leave it untouched by deferral.
+  - name: shared_src
+    database: shared
+    schema: main
+    tables:
+      - name: lookup

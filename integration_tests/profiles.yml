@@ -1,0 +1,26 @@
+# Three DuckDB catalogs simulate the environments:
+#   dev    — the sandbox target (dev.db)
+#   prod   — the "production" catalog the state manifest points at (prod.db)
+#   shared — a catalog shared by ALL environments (safety-gate case)
+# DBT_HACKS_ITEST_ROOT is set by the test harness (tests/conftest.py).
+itest:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      database: dev
+      path: "{{ env_var('DBT_HACKS_ITEST_ROOT') }}/dev.db"
+      schema: main
+      attach:
+        - path: "{{ env_var('DBT_HACKS_ITEST_ROOT') }}/prod.db"
+          alias: prod
+        - path: "{{ env_var('DBT_HACKS_ITEST_ROOT') }}/shared.db"
+          alias: shared
+    prod:
+      type: duckdb
+      database: prod
+      path: "{{ env_var('DBT_HACKS_ITEST_ROOT') }}/prod.db"
+      schema: main
+      attach:
+        - path: "{{ env_var('DBT_HACKS_ITEST_ROOT') }}/shared.db"
+          alias: shared

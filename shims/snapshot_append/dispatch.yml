@@ -1,0 +1,19 @@
+# shims/snapshot_append/dispatch.yml
+#
+# The `snapshot_append_strategy` macro is resolved automatically by dbt
+# across installed packages — no dispatch config needed for the strategy.
+#
+# However, the two `default__` overrides (default__build_snapshot_table and
+# default__snapshot_staging_table) live in the dbt_hacks PACKAGE, and dbt
+# does NOT pick up a package's `default__` overrides without an explicit
+# dispatch block in the consuming root project's dbt_project.yml.
+#
+# Add the following snippet to your project's dbt_project.yml (one time only):
+#
+# dispatch:
+#   - macro_namespace: dbt
+#     search_order: ['dbt_hacks', 'dbt']
+#
+# This tells dbt: "when resolving dbt.* macros, check dbt_hacks first."
+# The overrides are gated on `strategy == 'append'`, so all other snapshots
+# are unaffected and continue using the stock upstream implementations.

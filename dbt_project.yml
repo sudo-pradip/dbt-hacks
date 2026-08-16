@@ -1,0 +1,10 @@
+name: dbt_hacks
+version: 0.1.0
+
+# Floor at 1.3.0: first version exposing `invocation_args_dict` in the Jinja
+# context. Upper bound: dbt Fusion (v2) is a different engine — the
+# builtins-override pattern and `graph.nodes[*].defer_relation` are unverified
+# there (upstream issue dbt-core#10912 is labeled engine:v1).
+require-dbt-version: [">=1.3.0", "<2.0.0"]
+
+macro-paths: ["macros"]

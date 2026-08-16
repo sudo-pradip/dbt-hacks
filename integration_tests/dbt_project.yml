@@ -1,0 +1,11 @@
+name: itest
+version: 0.1.0
+profile: itest
+model-paths: ["models"]
+snapshot-paths: ["snapshots"]
+
+# Required so dbt resolves dbt_hacks default__ overrides before the built-ins.
+# (The strategy macro — snapshot_append_strategy — needs no dispatch config.)
+dispatch:
+  - macro_namespace: dbt
+    search_order: ["dbt_hacks", "dbt"]
